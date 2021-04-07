@@ -11,7 +11,7 @@ InterruptIn but_DOWN(D3);
 
 uLCD_4DGL uLCD(D1, D0, D2);
 
-void print(int counter);
+void print();
 void sampling();
 void generating();
 EventQueue sampling_queue(32 * EVENTS_EVENT_SIZE);
@@ -34,7 +34,8 @@ void Up()
     if(counter<3) counter++;
     else counter=3; 
     //printf("%d\n", counter);
-    //queue.call(print(counter));
+    queue.call(print);
+    //print(counter);
     //ThisThread::sleep_for(50ms);
 }
 
@@ -42,7 +43,8 @@ void Down()
 {
     if(counter>0) counter--;
     else counter=0;
-    //queue.call(print(counter)); 
+    //print(counter);
+    queue.call(print); 
     //ThisThread::sleep_for(50ms);
 }
 
@@ -167,7 +169,7 @@ void sampling()
 
 
 
-void print(int counter) {
+void print() {
     //uLCD.cls();
     uLCD.color(BLACK);
     uLCD.locate(1, 2);
