@@ -1,3 +1,4 @@
+/*
 #include "mbed.h"
 #include "uLCD_4DGL.h"
 
@@ -31,6 +32,7 @@ void Up()
 {
     if(counter<3) counter++;
     else counter=3; 
+    printf("%d\n", counter);
     print(counter);
     //ThisThread::sleep_for(50ms);
 }
@@ -45,10 +47,10 @@ void Down()
 
 void Sel()
 {
-    if (counter==3) t=10;           // 100Hz
-    else if (counter==2) t=20;      // 50Hz
-    else if (counter==1) t=40;      // 25Hz
-    else if (counter==0) t=100;     // 10Hz
+    if (counter==3) t=80;           // 100Hz
+    else if (counter==2) t=40;      // 50Hz
+    else if (counter==1) t=20;      // 25Hz
+    else if (counter==0) t=10;     // 10Hz
     generating_queue.call(generating);
     sampling_queue.call(sampling);
 
@@ -62,15 +64,22 @@ void generating()
     while (1) {
         // assuming VCC = 3.3v
         float i=0;
-        for (int x=0; x < (t*0.3);x++) {
-            i += (1.0/(t*0.3));
+        for (int x=0; x<t;x++) {
+            i += (1.0/t);
             aout = i;
             // ADCdata[count]=Ain;             // comment out when not sampling
             // count++;
             ThisThread::sleep_for(1ms);
         }
-        for (int x=0; x<(t*0.7); x++) {
-            i -= (1.0/(t*0.7));
+        for (int x=0; x<(240-2*t); x++) {
+            i = 1.0;
+            aout = i;
+            // ADCdata[count]=Ain;             // comment out when not sampling
+            // count++;
+            ThisThread::sleep_for(1ms);
+        }
+        for (int x=0; x<t; x++) {
+            i -= (1.0/t);
             aout = i;
             // ADCdata[count]=Ain;             // comment out when not sampling
             // count++;
@@ -112,7 +121,7 @@ int main(void)
     uLCD.printf("\n1/8\n");
     //int counter=3;
 
-    while(1) {
+    //while(1) {
 
         //int t;
         //float i;
@@ -123,6 +132,37 @@ int main(void)
 
 
         ThisThread::sleep_for(10ms);            
+    //}
+}
+
+
+int main(void)
+{
+    int t=80;
+    while (1) {
+        // assuming VCC = 3.3v
+        float i=0;
+        for (int x=0; x<t;x++) {
+            i += (1.0/t);
+            aout = i;
+            // ADCdata[count]=Ain;             // comment out when not sampling
+            // count++;
+            ThisThread::sleep_for(1ms);
+        }
+        for (int x=0; x<(240-2*t); x++) {
+            i = 1.0;
+            aout = i;
+            // ADCdata[count]=Ain;             // comment out when not sampling
+            // count++;
+            ThisThread::sleep_for(1ms);
+        }
+        for (int x=0; x<t; x++) {
+            i -= (1.0/t);
+            aout = i;
+            // ADCdata[count]=Ain;             // comment out when not sampling
+            // count++;
+            ThisThread::sleep_for(1ms);
+        }
     }
 }
 
@@ -156,5 +196,54 @@ void print(int counter) {
         uLCD.color(RED);
         uLCD.locate(1, 8);
         uLCD.printf("\n1/8\n");
+    }
+}
+*/
+
+
+
+#include "mbed.h"
+#include "uLCD_4DGL.h"
+
+
+AnalogOut  aout(PA_4);
+AnalogIn Ain(A0); 
+
+DigitalIn but_SEL(D6);
+DigitalIn but_UP(D5);
+DigitalIn but_DOWN(D3);
+
+uLCD_4DGL uLCD(D1, D0, D2);
+
+void print(int counter);
+
+float ADCdata[2000];
+int main(void)
+{
+    int t=10;
+    while (1) {
+        // assuming VCC = 3.3v
+        float i=0;
+        for (int x=0; x<t;x++) {
+            i += (1.0/t);
+            aout = i;
+            // ADCdata[count]=Ain;             // comment out when not sampling
+            // count++;
+            ThisThread::sleep_for(1ms);
+        }
+        for (int x=0; x<(240-2*t); x++) {
+            i = 1.0;
+            aout = i;
+            // ADCdata[count]=Ain;             // comment out when not sampling
+            // count++;
+            ThisThread::sleep_for(1ms);
+        }
+        for (int x=0; x<t; x++) {
+            i -= (1.0/t);
+            aout = i;
+            // ADCdata[count]=Ain;             // comment out when not sampling
+            // count++;
+            ThisThread::sleep_for(1ms);
+        }
     }
 }
