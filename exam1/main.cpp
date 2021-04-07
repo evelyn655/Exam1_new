@@ -50,10 +50,10 @@ void Down()
 
 void Sel()
 {
-    if (counter==3) t=80;           // 100Hz
-    else if (counter==2) t=40;      // 50Hz
-    else if (counter==1) t=20;      // 25Hz
-    else if (counter==0) t=10;     // 10Hz
+    if (counter==3) t=80;           
+    else if (counter==2) t=40;      
+    else if (counter==1) t=20;      
+    else if (counter==0) t=10;     
     generating_queue.call(generating);
     sampling_queue.call(sampling);
 }
@@ -137,35 +137,7 @@ void sampling()
 }
 
 
-// int main(void)
-// {
-//     int t=80;
-//     while (1) {
-//         // assuming VCC = 3.3v
-//         float i=0;
-//         for (int x=0; x<t;x++) {
-//             i += (1.0/t);
-//             aout = i;
-//             // ADCdata[count]=Ain;             // comment out when not sampling
-//             // count++;
-//             ThisThread::sleep_for(1ms);
-//         }
-//         for (int x=0; x<(240-2*t); x++) {
-//             i = 1.0;
-//             aout = i;
-//             // ADCdata[count]=Ain;             // comment out when not sampling
-//             // count++;
-//             ThisThread::sleep_for(1ms);
-//         }
-//         for (int x=0; x<t; x++) {
-//             i -= (1.0/t);
-//             aout = i;
-//             // ADCdata[count]=Ain;             // comment out when not sampling
-//             // count++;
-//             ThisThread::sleep_for(1ms);
-//         }
-//     }
-// }
+
 
 
 
